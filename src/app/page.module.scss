@@ -1,0 +1,52 @@
+.poster {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  opacity: 0.7;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+
+  padding: 15px;
+
+  &__adult {
+    color: red;
+    font-size: 25px;
+    font-weight: bold;
+  }
+
+  &__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  &__desc {
+    color: white;
+    font-size: 17px;
+    text-align: center;
+  }
+
+  &__link {
+    color: red;
+    text-align: center;
+    font-weight: bold;
+    font-size: 25px;
+    text-decoration: underline;
+    transition: all .3s ease-in;
+
+    &:hover {
+      scale: 1.1;
+    }
+  }
+}
+
+.image {
+  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+
+}
