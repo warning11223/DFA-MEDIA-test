@@ -15,6 +15,14 @@ export const MovieItem: React.FC<Props> = ({
   isHovered,
   setHoveredImage,
 }) => {
+  function truncateText(text: string, maxLength: number): string {
+    if (text.length <= maxLength) {
+      return text;
+    } else {
+      return text.substring(0, maxLength) + "...";
+    }
+  }
+
   return (
     <div
       key={movie.id}
@@ -23,7 +31,11 @@ export const MovieItem: React.FC<Props> = ({
       onMouseLeave={() => setHoveredImage(null)}
     >
       <Image
-        src={`${imageUrl}${movie.poster_path}`}
+        src={`${
+          movie.poster_path
+            ? `${imageUrl}${movie.poster_path}`
+            : "https://dummyimage.com/290x435"
+        } `}
         alt={movie.title}
         width={300}
         height={300}
@@ -35,7 +47,9 @@ export const MovieItem: React.FC<Props> = ({
             <p>{movie.release_date}</p>
             {!movie.adult && <p className={s.poster__adult}>18+</p>}
           </div>
-          <div className={s.poster__desc}>{movie.overview}</div>
+          <div className={s.poster__desc}>
+            {truncateText(movie.overview, 320)}
+          </div>
           <Link href={`${movie.id}`} className={s.poster__link}>
             More info
           </Link>

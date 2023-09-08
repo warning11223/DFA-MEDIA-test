@@ -44,6 +44,27 @@
       scale: 1.1;
     }
   }
+
+  &__btn {
+    background: none;
+    border: 1px solid red;
+    padding: 20px;
+    border-radius: 10px;
+    transition: all .2s linear;
+    text-transform: uppercase;
+    font-size: 18px;
+
+    &:hover {
+      background: #f1f1f1;
+      color: #2c2c6c;
+      border: 1px solid #f1f1f1;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+  }
 }
 
 .image {

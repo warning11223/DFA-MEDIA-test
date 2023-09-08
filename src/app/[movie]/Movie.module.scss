@@ -1,0 +1,134 @@
+.movie {
+  max-width: 1200px;
+  margin: 0 auto;
+
+
+  &__container {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+  }
+
+  &__title {
+    font-size: 40px;
+    text-align: center;
+    padding-top: 50px;
+    border-bottom: 1px solid #f1f1f1;
+    width: max-content;
+    margin: 0 auto;
+    margin-bottom: 50px;
+  }
+
+  &__img {
+    border-radius: 5px;
+    box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+  }
+
+  &__wrapper {
+    background-color: #2c2c6c;
+    color: #FFFFFF;
+    border-radius: 5px;
+    border: 1px solid #a9a9a9;
+    box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    height: 500px;
+    max-width: 470px;
+    overflow-y: scroll;
+    font-size: 17px;
+
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #8c8c8c;
+      border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: #757575;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: #f1f1f1;
+      border-radius: 5px;
+    }
+
+    &::-webkit-scrollbar-track:hover {
+      background-color: #ddd;
+    }
+  }
+
+  &__flex {
+    display: flex;
+    justify-content: space-between;
+    gap: 50px;
+  }
+
+  &__genres {
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+  }
+
+  &__homepage {
+    color: #ff0000;
+    transition: all .3s linear;
+    width: max-content;
+
+    &:hover {
+      color: #d20505;
+    }
+  }
+
+  &__desc {
+    padding-top: 20px;
+    text-align: center;
+  }
+
+  &__quote {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  &__images {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+
+  }
+
+  &__companies {
+    text-align: center;
+
+    &__title {
+      font-size: 25px;
+      padding-top: 50px;
+      margin-bottom: 50px;
+    }
+  }
+
+  &__btnWrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 100px;
+    padding-top: 100px;
+  }
+
+  &__btn {
+    border: 1px solid #FFFFFF;
+    padding: 10px;
+    border-radius: 5px;
+    transition: all .2s linear;
+
+    &:hover {
+      background-color: #fff;
+      color: black;
+    }
+  }
+}
