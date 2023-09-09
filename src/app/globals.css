@@ -46,42 +46,41 @@ body {
   opacity: 0.7;
 }
 
-/* Стили для стрелки "назад" (prev) */
 .swiper-button-prev {
   position: absolute;
-  left: 10px; /* Регулируйте отступ слева по вашему желанию */
-  top: 50%; /* Размещение по вертикали по центру */
-  transform: translateY(-50%); /* Центрирование по вертикали */
-  z-index: 10; /* Поднимите стрелку выше слайдов, если это необходимо */
-  width: 50px; /* Ширина стрелки */
-  height: 50px; /* Высота стрелки */
-  background-color: rgba(128, 128, 128, 0.5); /* Цвет фона стрелки */
-  border-radius: 2px; /* Закругленные углы */
-  cursor: pointer; /* Измените курсор при наведении */
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 50px;
+  height: 50px;
+  background-color: rgba(210, 210, 210, 0.5);
+  border-radius: 2px;
+  cursor: pointer;
   padding: 30px 25px;
-  transition: background-color 0.3s ease; /* Плавное изменение цвета фона */
+  transition: background-color 0.3s ease;
 }
 
 .swiper-button-prev:hover {
-  background-color: #858585; /* Изменение цвета фона при наведении */
+  background-color: #eaeaea;
 }
 
 /* Стили для стрелки "вперед" (next) */
 .swiper-button-next {
   position: absolute;
-  right: 10px; /* Регулируйте отступ справа по вашему желанию */
-  top: 50%; /* Размещение по вертикали по центру */
-  transform: translateY(-50%); /* Центрирование по вертикали */
-  z-index: 10; /* Поднимите стрелку выше слайдов, если это необходимо */
-  width: 50px; /* Ширина стрелки */
-  height: 50px; /* Высота стрелки */
-  background-color: rgba(128, 128, 128, 0.5); /* Цвет фона стрелки */
-  border-radius: 2px; /* Закругленные углы */
-  cursor: pointer; /* Измените курсор при наведении */
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 50px;
+  height: 50px;
+  background-color: rgba(210, 210, 210, 0.5);
+  border-radius: 2px;
+  cursor: pointer;
   padding: 30px 25px;
-  transition: background-color 0.3s ease; /* Плавное изменение цвета фона */
+  transition: background-color 0.3s ease;
 }
 
 .swiper-button-next:hover {
-  background-color: #bbbbbb; /* Изменение цвета фона при наведении */
+  background-color: #eaeaea;
 }

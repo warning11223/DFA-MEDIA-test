@@ -1,0 +1,1 @@
+export { FavouritesCarousel } from "./FavouritesCarousel";

@@ -1,6 +1,12 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
+import {
+  Navigation,
+  Pagination,
+  Scrollbar,
+  A11y,
+  Autoplay,
+} from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { MovieItem } from "@/components/MovieItem/MovieItem";
 import { Loader } from "@/components/Loader";
@@ -48,7 +54,7 @@ export default function Home() {
     if (debouncedInputValue) {
       localStorage.setItem("searchValue", debouncedInputValue);
 
-      findMovies({ value: debouncedInputValue, page: String(page), sortBy })
+      findMovies({ value: debouncedInputValue, page: String(page) })
         .unwrap()
         .then((res) => {
           setFoundMovies(res.results);
@@ -72,7 +78,6 @@ export default function Home() {
         findMovies({
           value: debouncedInputValue,
           page: String(page + 1),
-          sortBy,
         })
           .unwrap()
           .then((res) => {
@@ -130,7 +135,7 @@ export default function Home() {
             </p>
           )}
           <Swiper
-            modules={[Navigation, Pagination, Scrollbar, A11y]}
+            modules={[Navigation, Pagination, Scrollbar, A11y, Autoplay]}
             spaceBetween={10}
             slidesPerView={4}
             slidesPerGroup={4}
@@ -138,6 +143,10 @@ export default function Home() {
             height={300}
             navigation
             pagination={{ clickable: true }}
+            autoplay={{
+              delay: 5000,
+              pauseOnMouseEnter: true,
+            }}
           >
             {searchMovies.length > 0 && searchMovies}
           </Swiper>
