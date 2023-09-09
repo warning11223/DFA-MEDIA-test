@@ -1,17 +1,19 @@
 "use client";
-
-import { useGetMoviesQuery } from "@/services";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { MovieItem } from "@/app/MovieItem/MovieItem";
+import { MovieItem } from "@/components/MovieItem/MovieItem";
 import { Loader } from "@/components/Loader";
 import { Header } from "@/components/Header";
-import { TheMovie, useLazySearchMovieQuery } from "@/services/themovies";
+import {
+  TheMovie,
+  useLazySearchMovieQuery,
+  useLazySortMoviesQuery,
+} from "@/services/themovies";
 import { useDebounce } from "@/hooks";
+import { useRouter } from "next/navigation";
 
 import s from "./page.module.scss";
-
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -23,29 +25,24 @@ export default function Home() {
     localStorage.getItem("searchValue")! || "",
   );
   const [page, setPage] = useState(1);
-  const [sortBy, setSortBy] = useState("");
   const [totalPages, setTotalPages] = useState(0);
   const [foundMovies, setFoundMovies] = useState<TheMovie[]>([]);
+  const [year, setYear] = useState("");
+  const [genre, setGenre] = useState("");
+  const [sortBy, setSortBy] = useState("");
+  const router = useRouter();
 
-  const { data, isLoading } = useGetMoviesQuery(
-    localStorage.getItem("searchValue")!,
-  );
-  const [findMovies, { isLoading: isSearching, status }] =
-    useLazySearchMovieQuery();
+  const [findMovies, { status: findStatus }] = useLazySearchMovieQuery();
+  const [sortMovies, { status: sortStatus }] = useLazySortMoviesQuery();
 
   const debouncedInputValue = useDebounce(inputValue, 1000);
 
-  /*  useEffect(() => {
-    if (sortBy) {
-      findMovies({ value: debouncedInputValue, page: String(page), sortBy })
-        .unwrap()
-        .then((res) => {
-          setFoundMovies(res.results);
-
-          setTotalPages(res.total_pages);
-        });
+  useEffect(() => {
+    const id = localStorage.getItem("sessionId");
+    if (!id) {
+      router.push("/auth");
     }
-  }, [sortBy]);*/
+  }, []);
 
   useEffect(() => {
     if (debouncedInputValue) {
@@ -55,11 +52,50 @@ export default function Home() {
         .unwrap()
         .then((res) => {
           setFoundMovies(res.results);
-
           setTotalPages(res.total_pages);
         });
     }
   }, [debouncedInputValue]);
+
+  const onLoadMore = () => {
+    if (debouncedInputValue && page !== totalPages) {
+      localStorage.setItem("searchValue", debouncedInputValue);
+      if (sortBy) {
+        sortMovies({ sortBy, page: String(page + 1), genre, year })
+          .unwrap()
+          .then((res) => {
+            setFoundMovies(res.results);
+            setPage((prevState) => prevState + 1);
+            setTotalPages(res.total_pages);
+          });
+      } else {
+        findMovies({
+          value: debouncedInputValue,
+          page: String(page + 1),
+          sortBy,
+        })
+          .unwrap()
+          .then((res) => {
+            setFoundMovies(res.results);
+            setPage((prevState) => prevState + 1);
+            setTotalPages(res.total_pages);
+          });
+      }
+    }
+  };
+
+  const onSortMovies = (sortBy: string, genre: string, year: string) => {
+    setYear(year);
+    setGenre(genre);
+    setSortBy(sortBy);
+
+    sortMovies({ sortBy, page: String(page), genre, year })
+      .unwrap()
+      .then((res) => {
+        setFoundMovies(res.results);
+        setTotalPages(res.total_pages);
+      });
+  };
 
   const searchMovies = foundMovies.map((item) => {
     const isHovered = item.id === hoveredImage;
@@ -75,45 +111,21 @@ export default function Home() {
     );
   });
 
-  const movies = data?.results.map((item) => {
-    const isHovered = item.id === hoveredImage;
-
-    return (
-      <SwiperSlide key={item.id}>
-        <MovieItem
-          movie={item}
-          isHovered={isHovered}
-          setHoveredImage={setHoveredImage}
-        />
-      </SwiperSlide>
-    );
-  });
-
-  const onLoadMore = () => {
-    if (debouncedInputValue && page !== totalPages) {
-      localStorage.setItem("searchValue", debouncedInputValue);
-
-      findMovies({ value: debouncedInputValue, page: String(page + 1), sortBy })
-        .unwrap()
-        .then((res) => {
-          setFoundMovies(res.results);
-          setPage((prevState) => prevState + 1);
-          setTotalPages(res.total_pages);
-        });
-    }
-  };
-
   return (
     <>
-      <main className="flex min-h-screen flex-col items-center gap-40">
-        <Header
-          inputValue={inputValue}
-          setInputValue={setInputValue}
-          setSortBy={setSortBy}
-        />
+      <main className="flex min-h-screen flex-col items-center gap-12">
+        <Header onSortMovies={onSortMovies} />
         <div className={"w-[1200px]"}>
-          {!foundMovies.length && !data?.results.length && (
-            <p className={"text-center text-3xl"}>
+          <input
+            className={s.input}
+            type="text"
+            value={inputValue}
+            onChange={(e) => setInputValue(e.currentTarget.value)}
+            placeholder={"Search movies"}
+          />
+
+          {!foundMovies.length && (
+            <p className={"text-center text-3xl pt-32"}>
               No movies found for this request, try another one 😔
             </p>
           )}
@@ -127,7 +139,7 @@ export default function Home() {
             navigation
             pagination={{ clickable: true }}
           >
-            {searchMovies.length > 0 ? searchMovies : movies}
+            {searchMovies.length > 0 && searchMovies}
           </Swiper>
           {foundMovies.length > 0 && (
             <div className={"pt-5 mb-52"}>
@@ -142,9 +154,8 @@ export default function Home() {
           )}
         </div>
       </main>
-      {isLoading && <Loader />}
-      {isSearching && <Loader />}
-      {status === "pending" && <Loader />}
+      {findStatus === "pending" && <Loader />}
+      {sortStatus === "pending" && <Loader />}
     </>
   );
 }

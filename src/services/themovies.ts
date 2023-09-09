@@ -1,5 +1,4 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import src from "redux-thunk/src";
 
 const moviesApiKey = "422f111efe7319be39e92e4f142ba3d9";
 export const imageUrl = "https://image.tmdb.org/t/p/w500";
@@ -14,7 +13,7 @@ export const theMovies = createApi({
     getMovies: builder.query<TheMoviesResponse, string>({
       query: (value = "") => {
         return {
-          url: `discover/movie?api_key=${moviesApiKey}&query=${value}`,
+          url: `search/movie?api_key=${moviesApiKey}&query=${value}`,
           method: "GET",
         };
       },
@@ -26,23 +25,143 @@ export const theMovies = createApi({
         };
       },
     }),
-    searchMovie: builder.query<
-      SearchMovie,
-      { value: string; page: string; sortBy: string }
-    >({
-      query: ({ value, page, sortBy }) => {
+    searchMovie: builder.query<SearchMovie, { value: string; page: string }>({
+      query: ({ value, page }) => {
         return {
-          url: `discover/movie?api_key=${moviesApiKey}&sort_by=popularity.asc`,
+          url: `search/movie?api_key=${moviesApiKey}&query=${value}&page=${page}`,
+        };
+      },
+    }),
+    sortMovies: builder.query<
+      TheMoviesResponse,
+      { sortBy: string; page: string; genre: string; year: string }
+    >({
+      query: ({ sortBy, page, genre, year }) => {
+        return {
+          url: `discover/movie?api_key=${moviesApiKey}&page=1&sort_by=${sortBy}&with_genres=${genre}&primary_release_year=${year}&page=${page}`,
+        };
+      },
+    }),
+    createNewSession: builder.mutation<
+      { session_id: string; success: boolean },
+      { token: string; username: string; password: string }
+    >({
+      query: ({ password, username, token }) => {
+        return {
+          url: `authentication/session/new?api_key=${moviesApiKey}`,
+          method: "POST",
+          body: {
+            api_key: moviesApiKey,
+            request_token: token,
+            username: username,
+            password: password,
+          },
+        };
+      },
+    }),
+    createRequestToken: builder.query<RequestToken, void>({
+      query: () => {
+        return {
+          url: `authentication/token/new?api_key=${moviesApiKey}`,
+          method: "GET",
+        };
+      },
+    }),
+    deleteSession: builder.mutation<{ success: boolean }, string>({
+      query: (sessionId) => {
+        return {
+          url: `authentication/session?api_key=${moviesApiKey}`,
+          method: "DELETE",
+          body: {
+            api_key: moviesApiKey,
+            session_id: sessionId,
+          },
+        };
+      },
+    }),
+    getAccountInfo: builder.query<AccountInfo, string>({
+      query: (sessionId) => {
+        return {
+          url: `account?api_key=${moviesApiKey}&session_id=${sessionId}`,
+          method: "GET",
+        };
+      },
+    }),
+    addToFavourites: builder.query<
+      { status_code: number; status_message: string; success: boolean },
+      { accountId: string; movieId: string; sessionId: string }
+    >({
+      query: ({ accountId, movieId, sessionId }) => {
+        return {
+          url: `account/${accountId}/favorite?api_key=${moviesApiKey}&session_id=${sessionId}`,
+          method: "POST",
+          body: {
+            media_type: "movie",
+            media_id: movieId,
+            favorite: true,
+          },
+        };
+      },
+    }),
+    removeFromFavourites: builder.mutation<
+      { status_code: number; status_message: string; success: boolean },
+      { accountId: string; movieId: string; sessionId: string }
+    >({
+      query: ({ accountId, movieId, sessionId }) => {
+        return {
+          url: `account/${accountId}/favorite?api_key=${moviesApiKey}&session_id=${sessionId}`,
+          method: "POST",
+          body: {
+            media_type: "movie",
+            media_id: movieId,
+            favorite: false,
+          },
+        };
+      },
+    }),
+    getFavouritesMovies: builder.query<
+      TheMoviesResponse,
+      { accountId: string; sessionId: string }
+    >({
+      query: ({ accountId, sessionId }) => {
+        return {
+          url: `account/${accountId}/favorite/movies?api_key=${moviesApiKey}&session_id=${sessionId}`,
+          method: "GET",
         };
       },
     }),
   }),
 });
 
-// Export hooks for usage in functional components, which are
-// auto-generated based on the defined endpoints
-export const { useGetMoviesQuery, useGetMovieQuery, useLazySearchMovieQuery } =
-  theMovies;
+export const {
+  useGetMoviesQuery,
+  useGetMovieQuery,
+  useLazySearchMovieQuery,
+  useLazySortMoviesQuery,
+  useLazyCreateRequestTokenQuery,
+  useCreateNewSessionMutation,
+  useDeleteSessionMutation,
+  useLazyGetAccountInfoQuery,
+  useLazyAddToFavouritesQuery,
+  useLazyGetFavouritesMoviesQuery,
+  useRemoveFromFavouritesMutation,
+} = theMovies;
+
+type AccountInfo = {
+  avatar: { gravatar: { hash: string }; tmdb: { avatar_path: null } };
+  id: number;
+  iso_639_1: string;
+  iso_3166_1: string;
+  name: string;
+  include_adult: boolean;
+  username: string;
+};
+
+type RequestToken = {
+  expires_at: string;
+  request_token: string;
+  success: boolean;
+};
 
 export type SearchMovie = {
   page: number;

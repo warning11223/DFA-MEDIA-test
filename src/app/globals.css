@@ -45,3 +45,43 @@ body {
 .hovered .absolute {
   opacity: 0.7;
 }
+
+/* Стили для стрелки "назад" (prev) */
+.swiper-button-prev {
+  position: absolute;
+  left: 10px; /* Регулируйте отступ слева по вашему желанию */
+  top: 50%; /* Размещение по вертикали по центру */
+  transform: translateY(-50%); /* Центрирование по вертикали */
+  z-index: 10; /* Поднимите стрелку выше слайдов, если это необходимо */
+  width: 50px; /* Ширина стрелки */
+  height: 50px; /* Высота стрелки */
+  background-color: rgba(128, 128, 128, 0.5); /* Цвет фона стрелки */
+  border-radius: 2px; /* Закругленные углы */
+  cursor: pointer; /* Измените курсор при наведении */
+  padding: 30px 25px;
+  transition: background-color 0.3s ease; /* Плавное изменение цвета фона */
+}
+
+.swiper-button-prev:hover {
+  background-color: #858585; /* Изменение цвета фона при наведении */
+}
+
+/* Стили для стрелки "вперед" (next) */
+.swiper-button-next {
+  position: absolute;
+  right: 10px; /* Регулируйте отступ справа по вашему желанию */
+  top: 50%; /* Размещение по вертикали по центру */
+  transform: translateY(-50%); /* Центрирование по вертикали */
+  z-index: 10; /* Поднимите стрелку выше слайдов, если это необходимо */
+  width: 50px; /* Ширина стрелки */
+  height: 50px; /* Высота стрелки */
+  background-color: rgba(128, 128, 128, 0.5); /* Цвет фона стрелки */
+  border-radius: 2px; /* Закругленные углы */
+  cursor: pointer; /* Измените курсор при наведении */
+  padding: 30px 25px;
+  transition: background-color 0.3s ease; /* Плавное изменение цвета фона */
+}
+
+.swiper-button-next:hover {
+  background-color: #bbbbbb; /* Изменение цвета фона при наведении */
+}

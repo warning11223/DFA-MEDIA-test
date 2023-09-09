@@ -1,7 +1,9 @@
 .header {
-  background-color: #525252;
+  background-color: rgba(82, 82, 82, 0.5);
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
   width: 100%;
   height: 80px;
+
 
   &__wrapper {
     max-width: 1200px;
@@ -12,15 +14,56 @@
     height: 80px;
   }
 
-  &__input {
-    background-color: transparent;
-    border: 1px solid #f1f1f1;
-    padding: 10px;
-    border-radius: 5px;
-    transition: all .2s linear;
+  &__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80px;
 
-    &:focus {
-      border: 1px solid #2c2c6c;
-    }
+  }
+
+}
+
+.btn {
+  border: 1px solid #d20505;
+  padding: 10px 20px;
+  border-radius: 5px;
+  transition: all .2s linear;
+  margin-left: 15px;
+
+  &:hover {
+    background-color: #fff;
+    color: #252544;
+    border: 1px solid #f1f1f1;
+  }
+
+}
+
+.favBtn {
+  border: 1px solid #d20505;
+  padding: 10px 20px;
+  border-radius: 5px;
+  transition: all .2s linear;
+  margin-right: 10px;
+
+  &:hover {
+    background-color: #fff;
+    color: #252544;
+    border: 1px solid #f1f1f1;
+  }
+}
+
+.logout {
+  border: 1px solid #d20505;
+  padding: 10px 20px;
+  border-radius: 5px;
+  transition: all .2s linear;
+
+  &:hover {
+    background-color: #fff;
+    color: #252544;
+    border: 1px solid #f1f1f1;
   }
 }

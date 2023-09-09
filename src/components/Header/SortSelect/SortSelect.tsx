@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 
-import s from "./Select.module.scss";
+import s from "./SortSelect.module.scss";
 
 type Props = {
-  setSortBy: (value: string) => void;
+  setSort: (value: string) => void;
 };
 
-export const Select: React.FC<Props> = ({ setSortBy }) => {
+export const SortSelect: React.FC<Props> = ({ setSort }) => {
   const [selectedOption, setSelectedOption] = useState<string>("");
 
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedOption(event.target.value);
-    setSortBy(event.target.value);
+    setSort(event.target.value);
   };
 
   return (
@@ -35,8 +35,8 @@ export const Select: React.FC<Props> = ({ setSortBy }) => {
         <option value="primary_release_date.desc">
           Primary release date(desc)
         </option>
-        <option value="vote_average.asc">Vote average(asc)</option>
-        <option value="vote_average.desc">Vote average(desc)</option>
+        <option value="vote_average.asc">Rating(asc)</option>
+        <option value="vote_average.desc">Rating(desc)</option>
         <option value="vote_count.asc">Vote count(asc)</option>
         <option value="vote_count.desc">Vote count(desc)</option>
       </select>

@@ -1,29 +1,41 @@
 "use client";
-
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { imageUrl, useGetMovieQuery } from "@/services/themovies";
+import {
+  imageUrl,
+  useGetMovieQuery,
+  useLazyAddToFavouritesQuery,
+  useRemoveFromFavouritesMutation,
+} from "@/services/themovies";
 import Image from "next/image";
+import { Loader } from "@/components/Loader";
+import { convertMinutesToHoursAndMinutes } from "@/utils";
+import "swiper/css/scrollbar";
+import Link from "next/link";
 
 import s from "./Movie.module.scss";
-import { Loader } from "@/components/Loader";
-import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
-
-import { Swiper, SwiperSlide } from "swiper/react";
-
-// Import Swiper styles
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import "swiper/css/scrollbar";
-import Link from "next/link";
-import { convertMinutesToHoursAndMinutes } from "@/utils";
+import { toast } from "react-toastify";
 
 const Movie = () => {
-  const params1 = useParams();
+  const params = useParams();
+  const [accountId, setAccountId] = useState("");
+  const [sessionId, setSessionId] = useState("");
 
-  const { data, isLoading } = useGetMovieQuery(String(params1.movie));
-  console.log(data);
+  const { data, isLoading } = useGetMovieQuery(String(params.movie));
+  const [addToFavourites] = useLazyAddToFavouritesQuery();
+  const [removeFromFavourites] = useRemoveFromFavouritesMutation();
+
+  useEffect(() => {
+    const accountId = localStorage.getItem("accountId");
+    const sessionId = localStorage.getItem("sessionId");
+    if (accountId && sessionId) {
+      setAccountId(accountId);
+      setSessionId(sessionId);
+    }
+  }, []);
 
   const genres = data?.genres.map((item) => {
     return <p key={item.id}>{item.name}</p>;
@@ -49,6 +61,32 @@ const Movie = () => {
     );
   });
 
+  const onAddToFavourites = () => {
+    addToFavourites({ accountId, movieId: String(params.movie), sessionId })
+      .unwrap()
+      .then((res) => {
+        toast.success(res.status_message);
+      })
+      .catch((err) => {
+        toast.error(err.status_message);
+      });
+  };
+
+  const onRemoveFromFavourites = () => {
+    removeFromFavourites({
+      movieId: String(params.movie),
+      sessionId,
+      accountId,
+    })
+      .unwrap()
+      .then((res) => {
+        toast.success(res.status_message);
+      })
+      .catch((err) => {
+        toast.error(err.status_message);
+      });
+  };
+
   return (
     <>
       {isLoading ? (
@@ -56,6 +94,14 @@ const Movie = () => {
       ) : (
         <div className={s.movie}>
           <h2 className={s.movie__title}>{data?.title}</h2>
+          <div className={s.movie__favWrapper}>
+            <button onClick={onAddToFavourites} className={s.movie__btn}>
+              Add to favourites
+            </button>
+            <button onClick={onRemoveFromFavourites} className={s.movie__btn}>
+              Remove from favourites
+            </button>
+          </div>
           <div className={s.movie__container}>
             <Image
               className={s.movie__img}

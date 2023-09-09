@@ -1,0 +1,1 @@
+export { GenresSelect } from "./GenresSelect";

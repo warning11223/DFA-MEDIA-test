@@ -3,6 +3,7 @@ import s from "@/app/page.module.scss";
 import Image from "next/image";
 import { imageUrl, TheMovie } from "@/services/themovies";
 import Link from "next/link";
+import { truncateText } from "@/utils";
 
 type Props = {
   movie: TheMovie;
@@ -15,14 +16,6 @@ export const MovieItem: React.FC<Props> = ({
   isHovered,
   setHoveredImage,
 }) => {
-  function truncateText(text: string, maxLength: number): string {
-    if (text.length <= maxLength) {
-      return text;
-    } else {
-      return text.substring(0, maxLength) + "...";
-    }
-  }
-
   return (
     <div
       key={movie.id}
