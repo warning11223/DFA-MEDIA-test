@@ -15,6 +15,12 @@ export const GenresSelect: React.FC<Props> = ({ setGenre }) => {
     setGenre(String(value));
   };
 
+  const genresRender = genres.map((genre) => (
+    <option key={genre.id} value={genre.id}>
+      {genre.name}
+    </option>
+  ));
+
   return (
     <div className={s.selectContainer}>
       <select
@@ -27,11 +33,7 @@ export const GenresSelect: React.FC<Props> = ({ setGenre }) => {
         <option value="" disabled>
           Genre:
         </option>
-        {genres.map((genre) => (
-          <option key={genre.id} value={genre.id}>
-            {genre.name}
-          </option>
-        ))}
+        {genresRender}
       </select>
     </div>
   );

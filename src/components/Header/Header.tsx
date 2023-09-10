@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-import s from "./Header.module.scss";
 import { SortSelect } from "./SortSelect";
 import { GenresSelect } from "@/components/Header/GenresSelect";
 import { YearSelect } from "@/components/Header/YearSelect";
@@ -9,6 +8,8 @@ import { useRouter } from "next/navigation";
 import { Loader } from "@/components/Loader";
 import { toast } from "react-toastify";
 import Link from "next/link";
+
+import s from "./Header.module.scss";
 
 type Props = {
   onSortMovies: (sortBy: string, genre: string, year: string) => void;
@@ -57,10 +58,11 @@ export const Header: React.FC<Props> = ({ onSortMovies }) => {
             <SortSelect setSort={setSort} />
             <GenresSelect setGenre={setGenre} />
             <YearSelect setYear={setYear} />
-            <button onClick={onSortHandler} className={s.btn}>
+            <button onClick={onSortHandler} className={`${s.btn} ${s.filter}`}>
               Filter
             </button>
           </div>
+
           <Link href={"/favourites"} className={s.favBtn}>
             Favourites
           </Link>

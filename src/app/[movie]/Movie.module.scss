@@ -71,7 +71,7 @@
   &__genres {
     display: flex;
     justify-content: space-between;
-    gap: 5px;
+
   }
 
   &__homepage {
@@ -139,5 +139,50 @@
     align-items: center;
     padding-top: 20px;
     margin-bottom: 50px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .movie {
+    &__favWrapper {
+      margin-right: 20px;
+      margin-left: 20px;
+    }
+  }
+}
+
+@media (max-width: 770px) {
+  .movie {
+    &__container {
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-right: 20px;
+      margin-left: 20px;
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  .movie {
+    &__title {
+      font-size: 30px;
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  .movie {
+
+    &__title {
+      font-size: 23px;
+      margin-bottom: 20px;
+    }
+
+    &__favWrapper {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
   }
 }

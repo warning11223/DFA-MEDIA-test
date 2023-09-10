@@ -8,62 +8,41 @@ type Props = {
 };
 
 export const MovieDescription: React.FC<Props> = ({ data }) => {
-  const genres = data?.genres.map((item) => {
-    return <p key={item.id}>{item.name}</p>;
-  });
+  const renderItems = (title: string, value: string | number | null) => {
+    return (
+      value && (
+        <div className={s.movie__flex}>
+          <span>{title}:</span> <span>{value}</span>
+        </div>
+      )
+    );
+  };
 
-  const countries = data?.production_countries.map((item) => {
-    return <p key={item.iso_3166_1}>{item.name}</p>;
-  });
+  const renderList = (title: string, items: any[]) => {
+    const genreNames = items.map((item) => item.name);
+    const genreList = genreNames.join(", ");
+
+    return (
+      genreNames.length > 0 && (
+        <div className={s.movie__genres}>
+          <span>{title}:</span> <span>{genreList}</span>
+        </div>
+      )
+    );
+  };
 
   return (
     <div className={s.movie__wrapper}>
-      {!data?.adult && (
-        <div className={s.movie__flex}>
-          <span>Age: </span>
-          <span>18+</span>
-        </div>
-      )}
-      {data?.release_date && (
-        <div className={s.movie__flex}>
-          <span>Date:</span> <span>{data?.release_date}</span>
-        </div>
-      )}
-      {genres?.length! > 0 && (
-        <div className={s.movie__genres}>Genres: {genres}</div>
-      )}
-      {data?.original_language && (
-        <div className={s.movie__flex}>
-          <span>Language:</span>{" "}
-          <span>{data?.original_language.toUpperCase()}</span>
-        </div>
-      )}
-      {data?.runtime && (
-        <div className={s.movie__flex}>
-          <span>Runtime:</span>
-          <span>{convertMinutesToHoursAndMinutes(data?.runtime)}</span>
-        </div>
-      )}
-      {data?.tagline && (
-        <div className={s.movie__quote}>
-          <span>Quote:</span> <span>{data?.tagline}</span>
-        </div>
-      )}
-      {data?.budget! > 0 && (
-        <div className={s.movie__flex}>
-          <span>Budget:</span> <span>{data?.budget} $</span>
-        </div>
-      )}
-      {data?.production_countries && (
-        <div className={s.movie__genres}>Countries: {countries}</div>
-      )}
-
+      {!data?.adult && renderItems("Age", "18+")}
+      {renderItems("Date", data?.release_date)}
+      {renderList("Genres", data?.genres)}
+      {renderItems("Language", data?.original_language?.toUpperCase())}
+      {renderItems("Runtime", convertMinutesToHoursAndMinutes(data?.runtime))}
+      {renderItems("Quote", data?.tagline)}
+      {data?.budget! > 0 && renderItems("Budget", `${data?.budget} $`)}
+      {renderList("Countries", data?.production_countries)}
       {data?.homepage && (
-        <a
-          href={data?.homepage}
-          target={"_blank"}
-          className={s.movie__homepage}
-        >
+        <a href={data?.homepage} target="_blank" className={s.movie__homepage}>
           Homepage
         </a>
       )}

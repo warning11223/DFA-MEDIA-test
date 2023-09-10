@@ -1,14 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import {
-  Navigation,
-  Pagination,
-  Scrollbar,
-  A11y,
-  Autoplay,
-} from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { MovieItem } from "@/components/MovieItem/MovieItem";
 import { Loader } from "@/components/Loader";
 import { Header } from "@/components/Header";
 import {
@@ -24,12 +15,10 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
+import { MoviesCarousel } from "@/app/MoviesCarousel";
 
 export default function Home() {
-  const [hoveredImage, setHoveredImage] = useState<null | number>(0);
-  const [inputValue, setInputValue] = useState(
-    localStorage.getItem("searchValue")! || "",
-  );
+  const [inputValue, setInputValue] = useState("");
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [foundMovies, setFoundMovies] = useState<TheMovie[]>([]);
@@ -45,6 +34,9 @@ export default function Home() {
 
   useEffect(() => {
     const id = localStorage.getItem("sessionId");
+    const searchValue = localStorage.getItem("searchValue");
+    setInputValue(searchValue!);
+
     if (!id) {
       router.push("/auth");
     }
@@ -66,6 +58,7 @@ export default function Home() {
   const onLoadMore = () => {
     if (debouncedInputValue && page !== totalPages) {
       localStorage.setItem("searchValue", debouncedInputValue);
+
       if (sortBy) {
         sortMovies({ sortBy, page: String(page + 1), genre, year })
           .unwrap()
@@ -102,20 +95,6 @@ export default function Home() {
       });
   };
 
-  const searchMovies = foundMovies.map((item) => {
-    const isHovered = item.id === hoveredImage;
-
-    return (
-      <SwiperSlide key={item.id}>
-        <MovieItem
-          movie={item}
-          isHovered={isHovered}
-          setHoveredImage={setHoveredImage}
-        />
-      </SwiperSlide>
-    );
-  });
-
   return (
     <>
       <main className="flex min-h-screen flex-col items-center gap-12">
@@ -128,28 +107,12 @@ export default function Home() {
             onChange={(e) => setInputValue(e.currentTarget.value)}
             placeholder={"Search movies"}
           />
-
           {!foundMovies.length && (
             <p className={"text-center text-3xl pt-32"}>
               No movies found for this request, try another one 😔
             </p>
           )}
-          <Swiper
-            modules={[Navigation, Pagination, Scrollbar, A11y, Autoplay]}
-            spaceBetween={10}
-            slidesPerView={4}
-            slidesPerGroup={4}
-            width={1200}
-            height={300}
-            navigation
-            pagination={{ clickable: true }}
-            autoplay={{
-              delay: 5000,
-              pauseOnMouseEnter: true,
-            }}
-          >
-            {searchMovies.length > 0 && searchMovies}
-          </Swiper>
+          <MoviesCarousel foundMovies={foundMovies} />
           {foundMovies.length > 0 && (
             <div className={"pt-5 mb-52"}>
               <button

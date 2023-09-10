@@ -18,6 +18,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import { Loader } from "@/components/Loader";
+import { toast } from "react-toastify";
 
 export const FavouritesCarousel = () => {
   const [hoveredImage, setHoveredImage] = useState<null | number>(0);
@@ -42,7 +43,8 @@ export const FavouritesCarousel = () => {
         .unwrap()
         .then((res) => {
           setFoundMovies(res.results);
-        });
+        })
+        .catch(() => toast.error("Error"));
     }
   }, [accountId, sessionId]);
 

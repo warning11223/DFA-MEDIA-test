@@ -23,8 +23,8 @@ export const YearSelect: React.FC<Props> = ({ setYear }) => {
         name="yearInput"
         value={selectedYear}
         onChange={handleYearChange}
-        min={1900} // Минимальный год, который можно выбрать
-        max={2024} // Максимальный год, который можно выбрать
+        min={1900}
+        max={2024}
       />
     </div>
   );
