@@ -16,20 +16,8 @@ const Auth = () => {
     createToken()
       .unwrap()
       .then((res) => {
-        let redirectUrl;
-
-        if (window.location.hostname === "localhost") {
-          redirectUrl = "http://localhost:3000/success";
-        } else if (
-          window.location.hostname === "dfa-media-test-ten.vercel.app"
-        ) {
-          redirectUrl = "https://dfa-media-test-ten.vercel.app/success";
-        }
-
         router.push(
-          `https://www.themoviedb.org/authenticate/${
-            res.request_token
-          }?redirect_to=${encodeURIComponent(redirectUrl!)}`,
+          `https://www.themoviedb.org/authenticate/${res.request_token}?redirect_to=${window.location.origin}/success`,
         );
       })
       .catch(() => {
