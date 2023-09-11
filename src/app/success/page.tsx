@@ -10,24 +10,6 @@ import { useRouter } from "next/navigation";
 import { Loader } from "@/components/Loader";
 import { toast } from "react-toastify";
 
-interface SuccessProps {
-  query: {
-    searchParams: {
-      request_token: string;
-    };
-  };
-}
-
-export async function getServerSideProps(context: SuccessProps) {
-  const { query } = context;
-
-  return {
-    props: {
-      query, // передаем данные в компонент как свойство exampleData
-    },
-  };
-}
-
 const Success = ({
   params,
   searchParams,
@@ -40,6 +22,7 @@ const Success = ({
     password: "",
   });
   const { username, password } = formData;
+
   const router = useRouter();
 
   const [createNewSession, { isLoading }] = useCreateNewSessionMutation();
