@@ -10,6 +10,6 @@
 - **Swiper** 
 - **Scss**
 
-**![API](https://developer.themoviedb.org/docs/getting-started)**
+**[API](https://developer.themoviedb.org/docs/getting-started)**
 
 <img width="949" alt="image" src="https://github.com/warning11223/DFA-MEDIA-test/assets/70014989/867d3bcd-62de-43c9-8a0a-bc7001b10154">
