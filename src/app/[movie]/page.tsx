@@ -35,6 +35,8 @@ const Movie = () => {
     );
   });
 
+  console.log(`${imageUrl}${data?.poster_path}`);
+
   return (
     <>
       {isLoading ? (
