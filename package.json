@@ -17,6 +17,8 @@
     "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",
     "next": "13.4.19",
+    "next-compose-plugins": "^2.2.1",
+    "next-optimized-images": "^2.6.2",
     "postcss": "8.4.29",
     "prettier": "^3.0.3",
     "react": "18.2.0",
