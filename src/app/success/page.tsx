@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import s from "./Success.module.scss";
 import {
   useCreateNewSessionMutation,
@@ -10,13 +10,8 @@ import { useRouter } from "next/navigation";
 import { Loader } from "@/components/Loader";
 import { toast } from "react-toastify";
 
-const Success = ({
-  params,
-  searchParams,
-}: {
-  params: { slug: string };
-  searchParams: { request_token: string };
-}) => {
+const Success = () => {
+  const [requestToken, setRequestToken] = useState("");
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -27,6 +22,14 @@ const Success = ({
 
   const [createNewSession, { isLoading }] = useCreateNewSessionMutation();
   const [getAccountInfo, { status }] = useLazyGetAccountInfoQuery();
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const searchParams1 = new URLSearchParams(window.location.search);
+      const requestToken = searchParams1.get("request_token");
+      setRequestToken(requestToken!);
+    }
+  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -41,7 +44,7 @@ const Success = ({
       const res = await createNewSession({
         username,
         password,
-        token: searchParams.request_token,
+        token: requestToken!,
       }).unwrap();
 
       const accountInfo = await getAccountInfo(res.session_id).unwrap();
